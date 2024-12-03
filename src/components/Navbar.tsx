@@ -2,13 +2,19 @@ import { Link } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import { Fragment } from "react/jsx-runtime";
 import { useMessage } from "../hooks/useMessages";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  // Predefined user (as per requirements)
   const { user } = useUser();
-  const { userMessageStats } = useMessage();
+  const { userMessageStats, getMsgStats } = useMessage();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getMsgStats();
+    };
+    fetchData();
+  })
 
   return (
     <nav className="bg-blue-600 text-white p-4">
@@ -16,7 +22,6 @@ const Navbar = () => {
         {/* Logo and Menu */}
         <div className="flex items-center">
           <h1 className="text-xl font-bold mr-4">Mail App</h1>
-
 
           <div className="hidden md:flex space-x-4">
             <Link to="/" className="mr-4 hover:text-blue-200">
@@ -31,10 +36,12 @@ const Navbar = () => {
           {user && (
             <Fragment>
               <span className="mr-4">Welcome, {user?.username}</span>
+              {userMessageStats && userMessageStats?.unread && (
+                <div className="hidden md:block bg-red-500 rounded-full px-2 py-1 text-sm">
+                  {userMessageStats?.unread} Unread
+                </div>
+              )}
 
-              <div className="hidden md:block bg-red-500 rounded-full px-2 py-1 text-sm">
-                {userMessageStats?.unread} Unread
-              </div>
               <button
                 className="md:hidden text-white"
                 onClick={() => setMenuOpen(!menuOpen)}

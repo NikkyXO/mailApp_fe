@@ -16,7 +16,6 @@ export const useMessage = () => {
         try {
             setIsLoading(true);
             const response = await fetchUserMessages(user?.id || '');
-            console.log({ responseMsgs: response });
             setUserMessages(response);
             setError(null);
         } catch (error) {
@@ -31,7 +30,6 @@ export const useMessage = () => {
         try {
             setIsLoading(true);
             const response = await getUserMessageStats(user?.id || '');
-            console.log({ stats: response });
             setUserMessagesStats(response);
             setError(null);
         } catch (error) {
@@ -46,7 +44,6 @@ export const useMessage = () => {
         try {
             setIsLoading(true);
             const response = await getMessageDetail(id);
-            console.log({ SingleMsgs: response });
             setMessageId(response?.id);
             setSingleMessage(response);
             setError(null);
@@ -61,8 +58,7 @@ export const useMessage = () => {
     const markMessageRead = React.useCallback(async (id: string) => {
         try {
             setIsLoading(true);
-            const response = await markMessageAsRead(id);
-            console.log({ response });
+            await markMessageAsRead(id);
             setError(null);
         } catch (error) {
             setError(`Error in fetching messages: ${error instanceof Error ? error.message : String(error)}`);

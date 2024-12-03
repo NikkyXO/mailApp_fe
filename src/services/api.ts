@@ -5,12 +5,14 @@ console.log("baseUrl", import.meta.env.VITE_API_URL);
 
 
 const api = axios.create({   
-    baseURL: import.meta.env.VITE_API_URL || 'https://mail-app-be.vercel.app/',     
+    baseURL: import.meta.env.VITE_API_URL || 'https://mail-app-be.vercel.app/',
+    timeout: 10000, // 10 second timeout
     headers: {       
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     }, 
-  });  
+  }); 
+  
 
 
 
@@ -33,9 +35,7 @@ export const fetchUserMessages = async (userId: string) => {
   };
   
  export const getMessageDetail = async (id: string) => {
-  console.log("message by id", id);
     const response = await api.get<Message>(`/messages/${id}`);
-    console.log("response single msg", response);
     return response.data;
  }
  export const getUserMessageStats = async (userId: string): Promise<MessageStats> => {
@@ -44,8 +44,10 @@ export const fetchUserMessages = async (userId: string) => {
  }
 
  export const markMessageAsRead = async (id: string) => {
-    const response = await api.patch(`/messages/mark-read`, {
-      id
-    });
+  try {
+    const response = await api.get(`/messages/mark-read/${id}`);
     return response.data;
+  } catch (error) {
+    console.log("error occurred", error);
+  }
  }

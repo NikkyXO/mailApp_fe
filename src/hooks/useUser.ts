@@ -6,7 +6,7 @@ import { User } from "../types";
 export const useUser = () => {
     const [ user, setUser ] = useState<User | null>(null);
     const [ error, setError ] = useState<string | null>(null);
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isUserLoading, setIsLoading ] = useState<boolean>(false);
     
     const fetchUser = React.useCallback(async () => {
         try {
@@ -30,6 +30,6 @@ export const useUser = () => {
         user,
         getUser: fetchUser,
         error,
-        isLoading
+        isUserLoading
     } 
 }
