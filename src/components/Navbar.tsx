@@ -14,7 +14,7 @@ const Navbar = () => {
       await getMsgStats();
     };
     fetchData();
-  })
+  }, [getMsgStats])
 
   return (
     <nav className="bg-blue-600 text-white p-4">

@@ -35,11 +35,10 @@ export const useMessage = () => {
     try {
       setIsLoading(true);
       const response = await getUserMessageStats(user?.id || "");
-      if (!response) {
-        return;
+      if (response) {
+          setUserMessagesStats(response);
+          setError(null);
       }
-      setUserMessagesStats(response);
-      setError(null);
     } catch (error) {
       setError(
         `Error in fetching messages: ${
@@ -56,9 +55,11 @@ export const useMessage = () => {
     try {
       setIsLoading(true);
       const response = await getMessageDetail(id);
-      setMessageId(response?.id);
-      setSingleMessage(response);
-      setError(null);
+      if (response) {
+          setMessageId(response?.id);
+          setSingleMessage(response);
+          setError(null);
+      }
     } catch (error) {
       setError(
         `Error in fetching messages: ${

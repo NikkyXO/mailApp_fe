@@ -8,12 +8,9 @@ const InboxPage = () => {
   const { messages, fetchMessages, isLoading} = useMessage();
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!messages || messages.length === 0) {
-        await fetchMessages();
-      }
-    };
-    fetchData();
+    if (!messages || messages.length === 0) {
+      fetchMessages();
+    }
   }, [fetchMessages, messages]);
 
 

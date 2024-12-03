@@ -9,13 +9,11 @@ const HomePage = () => {
     useMessage();
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getUser();
-      await getMsgStats();
-      await fetchMessages();
-    };
-    fetchData();
+    getUser();
+    fetchMessages();
+    getMsgStats();
   }, [fetchMessages, getMsgStats, getUser]);
+  console.log({ userMessageStats });
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">

@@ -6,17 +6,14 @@ const MessageDetailPage = () => {
   const { getMessageById, singleMessage, markMessageRead } = useMessage();
   const { id } = useParams();
   useEffect(() => {
-    const fetchData = async () => {
-      if (id  && (!singleMessage || singleMessage?.id !== id)) {
-        await getMessageById(id);
-      }
-      if (id && singleMessage && !singleMessage.read) {
-        await markMessageRead(id);
-      }
-    };
-
-    if (id) fetchData();
-  }, []);
+    if (id  && (!singleMessage || singleMessage?.id !== id)) {
+      getMessageById(id);
+    }
+    if (id && singleMessage && !singleMessage.read) {
+      markMessageRead(id);
+    }
+    
+  }, [getMessageById, id, markMessageRead, singleMessage]);
 
   if (!id) {
     return <div>Message not found</div>;
