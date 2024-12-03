@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { Message, MessageStats, User } from '../types';
 
-console.log("baseUrl", import.meta.env.VITE_API_URL);
-
 
 const api = axios.create({   
     baseURL: import.meta.env.VITE_API_URL,
@@ -35,12 +33,20 @@ export const fetchUserMessages = async (userId: string) => {
   };
   
  export const getMessageDetail = async (id: string) => {
+  if (id) {
     const response = await api.get<Message>(`/messages/${id}`);
     return response.data;
+  }
  }
- export const getUserMessageStats = async (userId: string): Promise<MessageStats> => {
-    const response = await api.get('/messages/stats', { params: { userId } });
-    return response.data;
+ export const getUserMessageStats = async (userId: string): Promise<MessageStats | undefined> => {
+  try {
+    if (userId) {
+      const response = await api.get('/messages/stats', { params: { userId } });
+      return response.data;
+    }
+  } catch (error) {
+    console.log("error occurred", error);
+  }
  }
 
  export const markMessageAsRead = async (id: string) => {

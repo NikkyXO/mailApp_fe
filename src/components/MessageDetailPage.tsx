@@ -5,18 +5,18 @@ import { useEffect } from "react";
 const MessageDetailPage = () => {
   const { getMessageById, singleMessage, markMessageRead } = useMessage();
   const { id } = useParams();
-  console.log({ id });
   useEffect(() => {
-    if (id) {
-      const getData = async () => {
+    const fetchData = async () => {
+      if (id  && (!singleMessage || singleMessage?.id !== id)) {
         await getMessageById(id);
-      await markMessageRead(id);
       }
-      getData();
-      
-    }
-  }, [id, getMessageById, markMessageRead]);
-  console.log({ singleMessage });
+      if (id && singleMessage && !singleMessage.read) {
+        await markMessageRead(id);
+      }
+    };
+
+    if (id) fetchData();
+  }, [id, singleMessage, getMessageById, markMessageRead]);
 
   if (!id) {
     return <div>Message not found</div>;

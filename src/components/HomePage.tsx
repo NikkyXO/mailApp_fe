@@ -4,7 +4,7 @@ import { useMessage } from "../hooks/useMessages";
 import { useEffect } from "react";
 
 const HomePage = () => {
-  const { user, getUser, } = useUser();
+  const { user, getUser } = useUser();
   const { userMessageStats, getMsgStats, fetchMessages, isLoading } =
     useMessage();
 
@@ -19,7 +19,7 @@ const HomePage = () => {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
-      <h1 className="text-2xl font-bold mb-4">Welcome, {user?.username}!</h1>
+      <h1 className="text-2xl font-bold mb-4">Welcome, {user?.username}</h1>
       <div className="space-y-4">
         {isLoading ? (
           <div className="flex items-center justify-center p-4">
