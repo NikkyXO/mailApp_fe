@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import {
   fetchUserMessages,
   getUserMessageStats,
@@ -7,7 +7,6 @@ import {
 } from "../services/api";
 import { useUser } from "./useUser";
 import { Message, MessageStats } from "../types";
-import React from "react";
 export const useMessage = () => {
   const [messages, setUserMessages] = useState<Message[] | null>(null);
   const [userMessageStats, setUserMessagesStats] =
@@ -18,7 +17,7 @@ export const useMessage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useUser();
 
-  const fetchMessages = React.useCallback(async () => {
+  const fetchMessages = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await fetchUserMessages(user?.id || "");
@@ -30,9 +29,9 @@ export const useMessage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [user?.id]);
 
-  const getMsgStats = React.useCallback(async () => {
+  const getMsgStats = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await getUserMessageStats(user?.id || "");
@@ -51,9 +50,9 @@ export const useMessage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [user?.id]);
 
-  const getMessageById = React.useCallback(async (id: string) => {
+  const getMessageById = useCallback(async (id: string) => {
     try {
       setIsLoading(true);
       const response = await getMessageDetail(id);
@@ -72,7 +71,7 @@ export const useMessage = () => {
     }
   }, []);
 
-  const markMessageRead = React.useCallback(async (id: string) => {
+  const markMessageRead = useCallback(async (id: string) => {
     try {
       setIsLoading(true);
       await markMessageAsRead(id);
@@ -90,15 +89,19 @@ export const useMessage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [singleMessage]);
 
-  return {
+  const memoizedValues = useMemo(() => ({
     messages,
     userMessageStats,
     error,
     isLoading,
     singleMessage,
     messageId,
+  }), [messages, userMessageStats, error, isLoading, singleMessage, messageId]);
+
+  return {
+    ...memoizedValues,
     fetchMessages,
     getMsgStats,
     getMessageById,

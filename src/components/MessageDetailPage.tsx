@@ -16,7 +16,7 @@ const MessageDetailPage = () => {
     };
 
     if (id) fetchData();
-  }, [id, singleMessage, getMessageById, markMessageRead]);
+  }, [id]);
 
   if (!id) {
     return <div>Message not found</div>;

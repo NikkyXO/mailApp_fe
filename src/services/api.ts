@@ -4,7 +4,7 @@ import { Message, MessageStats, User } from '../types';
 
 const api = axios.create({   
     baseURL: import.meta.env.VITE_API_URL,
-    timeout: 10000, // 10 second timeout
+    // timeout: 10000, // 10 second timeout
     headers: {       
       'Content-Type': 'application/json',
       'Accept': 'application/json'
@@ -45,7 +45,7 @@ export const fetchUserMessages = async (userId: string) => {
       return response.data;
     }
   } catch (error) {
-    console.log("error occurred", error);
+    console.log("could not fetch stats", error);
   }
  }
 
@@ -54,6 +54,6 @@ export const fetchUserMessages = async (userId: string) => {
     const response = await api.get(`/messages/mark-read/${id}`);
     return response.data;
   } catch (error) {
-    console.log("error occurred", error);
+    console.log("could not mark message as read", error);
   }
  }
