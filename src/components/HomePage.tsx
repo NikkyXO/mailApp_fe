@@ -4,13 +4,25 @@ import { useMessage } from '../hooks/useMessages';
 import { useEffect } from 'react';
 
 const HomePage = () => {
-    const { user } = useUser();
-    const { userMessageStats, getMsgStats } = useMessage();
+    const { user, getUser } = useUser();
+    const { userMessageStats, getMsgStats, fetchMessages, messages  } = useMessage();
     
 
     useEffect(() => {
-        getMsgStats();
-    }, []);
+      const fetchData = async () => {
+        if (!user) {
+          await getUser();
+        }
+        if (!userMessageStats) {
+          await getMsgStats();
+        }
+        if (!messages || messages.length === 0) {
+          await fetchMessages();
+        }
+    };
+    fetchData();
+    }, [fetchMessages, getMsgStats, getUser, messages, user, userMessageStats]);
+
 
 
   return (

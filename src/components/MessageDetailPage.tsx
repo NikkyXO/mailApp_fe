@@ -3,13 +3,20 @@ import { useMessage } from "../hooks/useMessages";
 import { useEffect } from "react";
 
 const MessageDetailPage = () => {
-  const { getMessageById, singleMessage } = useMessage();
+  const { getMessageById, singleMessage, markMessageRead } = useMessage();
   const { id } = useParams();
+  console.log({ id });
   useEffect(() => {
     if (id) {
-      getMessageById(id);
+      const getData = async () => {
+        await getMessageById(id);
+      await markMessageRead(id);
+      }
+      getData();
+      
     }
-  }, [id, getMessageById]);
+  }, [id, getMessageById, markMessageRead]);
+  console.log({ singleMessage });
 
   if (!id) {
     return <div>Message not found</div>;

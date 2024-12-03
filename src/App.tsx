@@ -5,12 +5,11 @@ import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
 import InboxPage from './components/InboxPage';
 import MessageDetailPage from './components/MessageDetailPage';
-import { UserProvider } from './contexts/user.provider';
+
 
 
 const App = () => {
   return (
-    <UserProvider>
     <Router>
       <div className="min-h-screen bg-gray-100">
         <Navbar />
@@ -23,7 +22,6 @@ const App = () => {
         </div>
       </div>
     </Router>
-    </UserProvider>
   );
 };
 

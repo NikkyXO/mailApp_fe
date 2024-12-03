@@ -5,7 +5,7 @@ console.log("baseUrl", import.meta.env.VITE_API_URL);
 
 
 const api = axios.create({   
-    baseURL: import.meta.env.VITE_API_URL || 'https://mail-app-be.vercel.app/',     
+    baseURL: import.meta.env.VITE_API_URL,     
     headers: {       
       'Content-Type': 'application/json',
       'Accept': 'application/json'
@@ -28,21 +28,24 @@ export const getUser = async (): Promise<User> => {
 
 
 export const fetchUserMessages = async (userId: string) => {    
-    const response = await api.get('/messages/user', { params: { userId } });
+    const response = await api.get('/messages/user', { params: { userId } }); 
     return response.data;
   };
   
  export const getMessageDetail = async (id: string) => {
+  console.log("message by id", id);
     const response = await api.get<Message>(`/messages/${id}`);
+    console.log("response single msg", response);
     return response.data;
  }
  export const getUserMessageStats = async (userId: string): Promise<MessageStats> => {
     const response = await api.get('/messages/stats', { params: { userId } });
-    console.log({ stats1: response.data });
     return response.data;
  }
 
  export const markMessageAsRead = async (id: string) => {
-    const response = await api.put(`/messages/${id}/read`);
+    const response = await api.patch(`/messages/mark-read`, {
+      id
+    });
     return response.data;
  }
