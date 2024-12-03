@@ -13,7 +13,7 @@ const HomePage = () => {
     fetchMessages();
     getMsgStats();
   }, [fetchMessages, getMsgStats, getUser]);
-  console.log({ userMessageStats });
+
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
@@ -29,7 +29,7 @@ const HomePage = () => {
               <p>
                 You have{" "}
                 <span className="font-bold text-blue-600">
-                  {userMessageStats?.total || 0}
+                  {userMessageStats?.total}
                 </span>{" "}
                 total messages.
               </p>
