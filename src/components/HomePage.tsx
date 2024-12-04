@@ -1,26 +1,54 @@
-import { Link } from "react-router-dom";
-import { useUser } from "../hooks/useUser";
+import { Link, useNavigate } from "react-router-dom";
 import { useMessage } from "../hooks/useMessages";
 import { useEffect } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { useLoading } from "../hooks/useLoading";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 const HomePage = () => {
-  const { user, getUser } = useUser();
-  const { userMessageStats, getMsgStats, isLoading } = useMessage();
+  const navigate = useNavigate();
+  const { isLoading, startLoading, stopLoading } = useLoading();
+  const { user } = useAuth();
+  const { userMessageStats, getMsgStats } = useMessage();
+
+
 
   useEffect(() => {
-    getUser();
-    getMsgStats();
-  }, [user?.id, getUser, getMsgStats]);
+    const fetchData = async () => {
+      if (user && !userMessageStats) {
+        try {
+          startLoading();
+          await getMsgStats();
+        } catch (error) {
+          console.error("Failed to fetch message stats", error);
+        } finally {
+          stopLoading();
+        }
+      }
+    };
+    fetchData();
+  }, [getMsgStats, user, userMessageStats])
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user, navigate]);
+
+  if (isLoading) {
+    return (
+      <div className="absolute top-0 left-0 w-full">
+          <LoadingSpinner />
+        </div>
+    )
+  }
+
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6">
+    <div className="bg-white shadow-md rounded-lg p-10">
       <h1 className="text-2xl font-bold mb-4">Welcome, {user?.username}</h1>
       <div className="space-y-4">
-        {isLoading ? (
-          <div className="flex items-center justify-center p-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-          </div>
-        ) : (
+       
           <div>
             {userMessageStats && userMessageStats.total > 0 && (
               <p>
@@ -40,7 +68,7 @@ const HomePage = () => {
               </p>
             )}
           </div>
-        )}
+        {/* )} */}
 
         <Link
           to="/inbox"

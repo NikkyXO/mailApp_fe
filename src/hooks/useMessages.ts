@@ -5,8 +5,8 @@ import {
   getMessageDetail,
   markMessageAsRead,
 } from "../services/api";
-import { useUser } from "./useUser";
 import { Message, MessageStats } from "../types";
+import { useAuth } from "./useAuth";
 export const useMessage = () => {
   const [messages, setUserMessages] = useState<Message[] | null>(null);
   const [userMessageStats, setUserMessagesStats] =
@@ -14,7 +14,7 @@ export const useMessage = () => {
   const [singleMessage, setSingleMessage] = useState<Message | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { user } = useUser();
+  const { user } = useAuth();
 
   const handleApiError = useCallback((error: unknown) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
@@ -23,9 +23,9 @@ export const useMessage = () => {
 
   const fetchMessages = useCallback(async () => {
     try {
-      if (!user?.id) return;
+      if (!user?._id) return;
       setIsLoading(true);
-      const response = await fetchUserMessages(user.id);
+      const response = await fetchUserMessages(user._id);
       setUserMessages(response);
       setError(null);
     } catch (error) {
@@ -34,14 +34,16 @@ export const useMessage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [handleApiError, user?.id]);
+  }, [handleApiError, user?._id]);
 
   const getMsgStats = useCallback(async () => {
     try {
-      if (!user?.id) return;
+        console.log({ user });
+      if (!user?._id) return;
 
       setIsLoading(true);
-      const response = await getUserMessageStats(user.id);
+      const response = await getUserMessageStats(user._id);
+      console.log({ response });
       if (response) {
         const hasStatsChanged =
           !userMessageStats ||
@@ -58,7 +60,7 @@ export const useMessage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [handleApiError, user?.id, userMessageStats]);
+  }, [handleApiError, user?._id, userMessageStats]);
 
   const getMessageById = useCallback(
     async (id: string) => {

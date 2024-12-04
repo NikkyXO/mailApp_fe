@@ -1,20 +1,36 @@
-import { Link } from "react-router-dom";
-import { useUser } from "../hooks/useUser";
+import { Link, useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
 import { useMessage } from "../hooks/useMessages";
 import { useEffect, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+
 
 const Navbar = () => {
-  const { user } = useUser();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const { userMessageStats, getMsgStats } = useMessage();
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      await getMsgStats();
+      if (user && !userMessageStats) {
+        await getMsgStats();
+      }
     };
     fetchData();
-  }, [getMsgStats])
+  }, [getMsgStats, user, userMessageStats])
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    }
+  }, [user, navigate]);
+  const handleLogout = () => {
+    logout();
+    console.log('logging out');
+    console.log({ user });
+    navigate('/login');
+  };
 
   return (
     <nav className="bg-blue-600 text-white p-4">
@@ -41,6 +57,12 @@ const Navbar = () => {
                   {userMessageStats?.unread} Unread
                 </div>
               )}
+               <button 
+                 className="ml-4 hover:text-blue-200"
+                 onClick={handleLogout}
+               >
+                 Logout
+               </button>
 
               <button
                 className="md:hidden text-white"

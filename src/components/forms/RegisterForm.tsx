@@ -8,6 +8,7 @@ export const RegisterForm: React.FC = () => {
   const { register } = useAuth();
 
   const registerFields: FormField[] = [
+    { type: 'email', placeholder: 'Email', value: '', onChange: () => {} },
     { type: 'text', placeholder: 'Username', value: '', onChange: () => {} },
     { type: 'password', placeholder: 'Password', value: '', onChange: () => {} }
   ];
@@ -17,7 +18,11 @@ export const RegisterForm: React.FC = () => {
       <GenericForm
         fields={registerFields}
         onSubmit={async (formData) => {
-          return await register(formData.username, formData.password);
+          return await register({
+            username: formData.username,
+            email: formData.email,
+            password: formData.password
+          });
         }}
         submitButtonText="Register"
         successMessage="Registration successful!"

@@ -1,6 +1,8 @@
 import { FormProps } from "../../types";
 import { useState } from "react";
 import { useFormHandler } from "../../hooks/useFormHandler";
+import { ErrorDisplay } from "../ErrorDisplay";
+import { SuccessDisplay } from "../SuccessDisplay";
 
 export const GenericForm: React.FC<FormProps> = ({
     fields,
@@ -27,18 +29,12 @@ export const GenericForm: React.FC<FormProps> = ({
     };
     return (
       <div className={`my-auto ${className}`}>
-        {message && (
-          <div className="w-1/2 mx-auto p-2 bg-green-400 text-white mb-3">
-            {message}
-          </div>
-        )}
-        {error && (
-          <div className="w-1/2 mx-auto p-2 bg-red-100 text-red-700 mb-3">
-            {error}
-          </div>
-        )}
+        {message && 
+          <SuccessDisplay message={message}/>
+        }
+        {error && <ErrorDisplay message={error} />}
         <form
-          className='flex flex-col space-y-4'
+          className='flex flex-col space-y-4 mx-auto'
           onSubmit={(e) => handleSubmit(e, formData)}
         >
           {fields.map((field, index) => (

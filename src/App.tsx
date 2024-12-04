@@ -1,27 +1,53 @@
-
-import './App.css'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import HomePage from './components/HomePage';
-import InboxPage from './components/InboxPage';
-import MessageDetailPage from './components/MessageDetailPage';
-
-
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import HomePage from "./components/HomePage";
+import InboxPage from "./components/InboxPage";
+import MessageDetailPage from "./components/MessageDetailPage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { AuthProvider } from "./contexts/AuthContext";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 const App = () => {
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-100">
-        <Navbar />
-        <div className="container mx-auto px-4 py-8">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/inbox" element={<InboxPage />} />
-            <Route path="/message/:id" element={<MessageDetailPage />} />
-          </Routes>
+    <AuthProvider>
+      <Router>
+        <div className="min-h-screen bg-gray-100">
+          <Navbar />
+          <div className="container mx-auto px-4 py-8">
+            <Routes>
+              <Route path="/login" element={<LoginPage />}  />
+              <Route path="/signup" element={<RegisterPage />} />
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <HomePage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/inbox"
+                element={
+                  <PrivateRoute>
+                    <InboxPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/message/:id"
+                element={
+                  <PrivateRoute>
+                    <MessageDetailPage />
+                  </PrivateRoute>
+                }
+              />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 };
 

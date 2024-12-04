@@ -9,7 +9,7 @@ export const LoginForm: React.FC = () => {
   const { login } = useAuth();
 
   const loginFields: FormField[] = [
-    { type: 'text', placeholder: 'Username', value: '', onChange: () => {} },
+    { type: 'email', placeholder: 'Email', value: '', onChange: () => {} },
     { type: 'password', placeholder: 'Password', value: '', onChange: () => {} }
   ];
 
@@ -20,13 +20,13 @@ export const LoginForm: React.FC = () => {
       <GenericForm
         fields={loginFields}
         onSubmit={async (formData) => {
-          return await login(formData.username, formData.password);
+          return await login(formData.email, formData.password);
         }}
         submitButtonText="Login"
         successMessage="Login successful!"
-        successRedirectPath="/items"
+        successRedirectPath="/"
       />
-      <p className='mx-auto text-white mt-4'>Not registered yet?{' '} <Link to="/register" className="text-blue-400 hover:underline">Register</Link></p>
+      <p className='mx-auto text-white mt-4'>Not registered yet?{' '} <Link to="/signup" className="text-blue-400 hover:underline">Register</Link></p>
     </div>
   );
 };
