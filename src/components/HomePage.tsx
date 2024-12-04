@@ -5,15 +5,12 @@ import { useEffect } from "react";
 
 const HomePage = () => {
   const { user, getUser } = useUser();
-  const { userMessageStats, getMsgStats, fetchMessages, isLoading } =
-    useMessage();
+  const { userMessageStats, getMsgStats, isLoading } = useMessage();
 
   useEffect(() => {
     getUser();
-    fetchMessages();
     getMsgStats();
-  }, [fetchMessages, getMsgStats, getUser]);
-
+  }, [user?.id, getUser, getMsgStats]);
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
@@ -25,7 +22,7 @@ const HomePage = () => {
           </div>
         ) : (
           <div>
-            {userMessageStats && userMessageStats?.total > 0 && (
+            {userMessageStats && userMessageStats.total > 0 && (
               <p>
                 You have{" "}
                 <span className="font-bold text-blue-600">
@@ -34,7 +31,7 @@ const HomePage = () => {
                 total messages.
               </p>
             )}
-            {userMessageStats && userMessageStats?.unread >= 1 && (
+            {userMessageStats && userMessageStats.unread >= 1 && (
               <p>
                 <span className="font-bold text-red-600">
                   {userMessageStats?.unread}
