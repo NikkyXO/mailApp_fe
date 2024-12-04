@@ -40,3 +40,26 @@ export interface User {
     content: string;
   }
 
+  export interface AuthContextType {
+    user: User | null;
+    register: (username: string, password: string) => Promise<boolean>;
+    login: (username: string, password: string) => Promise<boolean>;
+    logout: () => void;
+    error: string | null;
+  }
+  
+  export interface LoginCredentials {
+    username: string;
+    password: string;
+  }
+  
+  export interface RegisterCredentials extends LoginCredentials {
+    email: string;
+  }
+  
+  export interface AuthResponse {
+    access_token: string;
+    refresh_token: string;
+    user: User;
+  }
+

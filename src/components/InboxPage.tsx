@@ -46,7 +46,7 @@ const InboxPage = () => {
             </Link>
           ))
         ): (
-          <p className="text-gray-600 p-4">No messages to display for now.</p>
+          <p className="text-gray-600 p-4">Fetching Messages....</p>
         )}
     </div>
   );

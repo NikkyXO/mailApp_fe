@@ -12,6 +12,45 @@ const api = axios.create({
   }); 
   
 
+  interface LoginResponse {
+    accessToken: string;
+    user: User;
+  }
+  
+  interface RegisterData {
+    username: string;
+    email: string;
+    password: string;
+  }
+  
+  
+  export const loginUser = async (username: string, password: string): Promise<LoginResponse> => {
+    try {
+      const response = await api.post<LoginResponse>('/auth/login', {
+        username,
+        password,
+      });
+      localStorage.setItem('access_token', response.data.accessToken);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.message || 'Login failed');
+      }
+      throw new Error('An unexpected error occurred');
+    }
+  };
+  
+  export const registerUser = async (data: RegisterData): Promise<User> => {
+    try {
+      const response = await api.post<User>('/auth/signup', data);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw new Error(error.response?.data?.message || 'Registration failed');
+      }
+      throw new Error('An unexpected error occurred');
+    }
+  };
 
 
 export const getUser = async (): Promise<User> => {
