@@ -30,7 +30,7 @@ export const useMessage = () => {
     try {
       if (!user?._id) return;
       setIsLoading(true);
-      const response = await fetchUserMessages(user._id);
+      const response = await fetchUserMessages();
       setUserMessages(response);
       setError(null);
     } catch (error) {
@@ -43,13 +43,10 @@ export const useMessage = () => {
 
   const getMsgStats = useCallback(async () => {
     try {
-
-      if (!user?._id) return;
       // Prevent multiple simultaneous calls
     if (initialStatsFetchRef.current) return;
       setIsLoading(true);
-      const response = await getUserMessageStats(user._id);
-      console.log({ response });
+      const response = await getUserMessageStats();
       if (response) {
         const hasStatsChanged =
           !userMessageStats ||
@@ -67,7 +64,7 @@ export const useMessage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [handleApiError, user, userMessageStats]);
+  }, [handleApiError, userMessageStats]);
 
   const getMessageById = useCallback(
     async (id: string) => {

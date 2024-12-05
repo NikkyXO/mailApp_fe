@@ -62,12 +62,9 @@ const getAuthHeaders = (): { Authorization: string } => {
   return { Authorization: `Bearer ${token}` };
 };
 
-export const fetchUserMessages = async (userId: string) => {
+export const fetchUserMessages = async () => {
   const headers = getAuthHeaders();
-  const response = await api.get("/messages/user", {
-    ...{ params: { userId } },
-    ...{ headers },
-  });
+  const response = await api.get("/messages/user", { headers });
   return response.data;
 };
 
@@ -79,18 +76,11 @@ export const getMessageDetail = async (id: string) => {
   }
 };
 export const getUserMessageStats = async (
-  userId: string
 ): Promise<MessageStats | undefined> => {
   try {
-    if (userId) {
-      const headers = getAuthHeaders();
-
-      const response = await api.get("/messages/stats", {
-        ...{ params: { userId } },
-        ...{ headers },
-      });
-      return response.data;
-    }
+    const headers = getAuthHeaders();
+    const response = await api.get("/messages/stats", { headers });
+    return response.data;
   } catch (error) {
     console.log("could not fetch stats", error);
   }
