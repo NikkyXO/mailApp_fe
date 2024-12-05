@@ -5,27 +5,33 @@ import React from 'react';
     size?: number;
     color?: string;
     message?: string;
+    className?: string;
   }
-  
+
+
   export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
-    size = 6, 
+    size = 6,
     color = 'blue-700',
     message = 'Loading...',
+    className = ''
   }) => (
-    <div 
-      className="flex flex-col justify-center items-center h-screen" 
-      role="status" 
-      aria-label={message} 
+    <div
+      className={`flex flex-col justify-center items-center w-full ${className}`}
+      role="status"
+      aria-label={message}
     >
-      <div
-        className={`animate-spin rounded-full border-t-4 border-${color}`}
+      <div 
+        className={`animate-spin rounded-full border-4 border-t-4 border-gray-200 border-t-${color} mb-4`}
         style={{
           height: `${size}rem`,
           width: `${size}rem`,
+          borderWidth: `${size/6}rem`
         }}
-      ></div>
+      />
       {message && (
-        <p className="mt-4 text-gray-600">{message}</p>
+        <p className="text-gray-600 text-sm tracking-wide animate-pulse">
+          {message}
+        </p>
       )}
     </div>
   );

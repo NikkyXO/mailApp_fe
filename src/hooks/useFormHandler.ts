@@ -45,7 +45,7 @@ export const useFormHandler = (onSubmit: (formData: Record<string, string>) => P
         }, 1500);
         return () => clearTimeout(timer);
       }
-    }, [successMessage, navigate]);
+    }, [successMessage, navigate, successRedirectPath]);
   
     return {
       error,

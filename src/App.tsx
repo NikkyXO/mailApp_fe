@@ -9,6 +9,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import { PrivateRoute } from "./components/PrivateRoute";
 
+
 const App = () => {
   return (
     <AuthProvider>
@@ -17,8 +18,9 @@ const App = () => {
           <Navbar />
           <div className="container mx-auto px-4 py-8">
             <Routes>
-              <Route path="/login" element={<LoginPage />}  />
+              <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<RegisterPage />} />
+               {/* Private Routes */}
               <Route
                 path="/"
                 element={
@@ -27,6 +29,7 @@ const App = () => {
                   </PrivateRoute>
                 }
               />
+
               <Route
                 path="/inbox"
                 element={

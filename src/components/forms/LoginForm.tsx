@@ -13,9 +13,8 @@ export const LoginForm: React.FC = () => {
     { type: 'password', placeholder: 'Password', value: '', onChange: () => {} }
   ];
 
-
   return (
-    <div className="m-auto flex flex-col w-full">
+    <div className=" flex flex-col ">
 
       <GenericForm
         fields={loginFields}

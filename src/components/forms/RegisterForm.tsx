@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 export const RegisterForm: React.FC = () => {
   const { register } = useAuth();
+  console.log('register form');
 
   const registerFields: FormField[] = [
     { type: 'email', placeholder: 'Email', value: '', onChange: () => {} },
@@ -14,7 +15,7 @@ export const RegisterForm: React.FC = () => {
   ];
 
   return (
-    <div className="m-auto flex flex-col w-full">
+    <div className="flex flex-col">
       <GenericForm
         fields={registerFields}
         onSubmit={async (formData) => {
@@ -26,9 +27,9 @@ export const RegisterForm: React.FC = () => {
         }}
         submitButtonText="Register"
         successMessage="Registration successful!"
-        successRedirectPath="/"
+        successRedirectPath="/login"
       />
-      <p className='mx-auto text-white mt-4'>Already registered?{' '} <Link to="/" className="text-blue-400 hover:underline">Login</Link></p>
+      <p className='mx-auto text-white mt-4'>Already registered?{' '} <Link to="/login" className="text-blue-400 hover:underline">Login</Link></p>
     </div>
   );
 };

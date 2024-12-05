@@ -48,6 +48,7 @@ export interface User {
     userId: string;
     content: string;
     read: boolean;
+    createdAt?: string;
   }
 
   export interface MessageCreateData {
