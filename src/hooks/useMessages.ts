@@ -9,8 +9,13 @@ import { Message, MessageStats } from "../types";
 import { useAuth } from "./useAuth";
 export const useMessage = () => {
   const [messages, setUserMessages] = useState<Message[] | null>(null);
+  const [isMsgsFetched, setMsgsFetched] = useState(false);
+
   const [userMessageStats, setUserMessagesStats] =
     useState<MessageStats | null>(null);
+    const [isStatsFetched, setIsStatsFetched] = useState(false);
+
+
   const [singleMessage, setSingleMessage] = useState<Message | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -23,10 +28,12 @@ export const useMessage = () => {
 
   const fetchMessages = useCallback(async () => {
     try {
+    if (isMsgsFetched) return;
       if (!user?._id) return;
       setIsLoading(true);
       const response = await fetchUserMessages(user._id);
       setUserMessages(response);
+      setMsgsFetched(true);
       setError(null);
     } catch (error) {
       handleApiError(error);
@@ -34,13 +41,14 @@ export const useMessage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [handleApiError, user?._id]);
+  }, [handleApiError, isMsgsFetched, user?._id]);
 
   const getMsgStats = useCallback(async () => {
     try {
-        console.log({ user });
-      if (!user?._id) return;
 
+      if (!user?._id) return;
+      // Prevent multiple simultaneous calls
+    if (isStatsFetched) return;
       setIsLoading(true);
       const response = await getUserMessageStats(user._id);
       console.log({ response });
@@ -52,6 +60,7 @@ export const useMessage = () => {
           response.readCount !== userMessageStats.readCount;
         if (hasStatsChanged) {
           setUserMessagesStats(response);
+          setIsStatsFetched(true);
           setError(null);
         }
       }
@@ -60,7 +69,7 @@ export const useMessage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [handleApiError, user?._id, userMessageStats]);
+  }, [handleApiError, isStatsFetched, user, userMessageStats]);
 
   const getMessageById = useCallback(
     async (id: string) => {
