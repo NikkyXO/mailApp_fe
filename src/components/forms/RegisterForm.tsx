@@ -3,9 +3,12 @@ import { useAuth } from "../../hooks/useAuth";
 import { GenericForm } from "./CustomForm";
 import { FormField } from "../../types";
 import { Link } from "react-router-dom";
+import { useLoading } from "../../hooks/useLoading";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 export const RegisterForm: React.FC = () => {
-  const { register } = useAuth();
+  const { isLoading, startLoading, stopLoading } = useLoading();
+  const { register, } = useAuth();
   console.log('register form');
 
   const registerFields: FormField[] = [
@@ -14,16 +17,27 @@ export const RegisterForm: React.FC = () => {
     { type: 'password', placeholder: 'Password', value: '', onChange: () => {} }
   ];
 
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+        <LoadingSpinner size={8} color="green-500" message="Registering..." />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col">
       <GenericForm
         fields={registerFields}
         onSubmit={async (formData) => {
-          return await register({
+          startLoading();
+          await register({
             username: formData.username,
             email: formData.email,
             password: formData.password
           });
+          stopLoading();
+          return true
         }}
         submitButtonText="Register"
         successMessage="Registration successful!"
