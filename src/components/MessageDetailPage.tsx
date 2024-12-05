@@ -10,6 +10,7 @@ import {
   MoreVertical 
 } from 'lucide-react';
 import { LoadingSpinner } from "./LoadingSpinner";
+import React from "react";
 
 const MessageDetailPage = () => {
   const { getMessageById, singleMessage, markMessageRead } = useMessage();
@@ -134,4 +135,4 @@ const MessageDetailPage = () => {
   
 };
 
-export default MessageDetailPage;
+export default React.memo(MessageDetailPage);

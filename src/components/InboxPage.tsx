@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, memo } from "react";
 import { useMessage } from "../hooks/useMessages";
 import { Link } from "react-router-dom";
 import { LoadingSpinner } from "./LoadingSpinner";
@@ -9,16 +9,23 @@ import {
   Clock, 
   AlertCircle 
 } from 'lucide-react';
+import { Message } from "../types";
+
+export interface InboxPageProps {
+  messages: Message[];
+}
 const InboxPage = () => {
   const { messages, fetchMessages } = useMessage();
   const { isLoading, startLoading, stopLoading } = useLoading();
+  const initialFetchRef = useRef(false);
 
   useEffect(() => {
     const loadMessages = async () => {
-      if (!messages || messages.length === 0) {
+      if (!initialFetchRef.current && (!messages || messages.length === 0)) {
         try {
           startLoading();
           await fetchMessages();
+          initialFetchRef.current = true;
         } catch (error) {
           console.error("Failed to fetch messages", error);
         } finally {
@@ -123,6 +130,8 @@ const InboxPage = () => {
   );
 };
 
+export default memo(InboxPage);
+
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
@@ -133,4 +142,7 @@ const formatDate = (dateString: string) => {
   });
 };
 
-export default InboxPage;
+
+
+
+

@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useLoading } from "../hooks/useLoading";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Inbox, User, Mail } from 'lucide-react';
+import React from "react";
 
 const HomePage = () => {
   // const navigate = useNavigate();
@@ -91,4 +92,4 @@ const HomePage = () => {
 };
 
 
-export default HomePage;
+export default React.memo(HomePage);

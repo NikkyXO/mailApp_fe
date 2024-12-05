@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef } from "react";
 import {
   fetchUserMessages,
   getUserMessageStats,
@@ -9,11 +9,11 @@ import { Message, MessageStats } from "../types";
 import { useAuth } from "./useAuth";
 export const useMessage = () => {
   const [messages, setUserMessages] = useState<Message[] | null>(null);
-  const [isMsgsFetched, setMsgsFetched] = useState(false);
+
 
   const [userMessageStats, setUserMessagesStats] =
     useState<MessageStats | null>(null);
-    const [isStatsFetched, setIsStatsFetched] = useState(false);
+    const initialStatsFetchRef = useRef(false);
 
 
   const [singleMessage, setSingleMessage] = useState<Message | null>(null);
@@ -28,12 +28,10 @@ export const useMessage = () => {
 
   const fetchMessages = useCallback(async () => {
     try {
-    if (isMsgsFetched) return;
       if (!user?._id) return;
       setIsLoading(true);
       const response = await fetchUserMessages(user._id);
       setUserMessages(response);
-      setMsgsFetched(true);
       setError(null);
     } catch (error) {
       handleApiError(error);
@@ -41,14 +39,14 @@ export const useMessage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [handleApiError, isMsgsFetched, user?._id]);
+  }, []);
 
   const getMsgStats = useCallback(async () => {
     try {
 
       if (!user?._id) return;
       // Prevent multiple simultaneous calls
-    if (isStatsFetched) return;
+    if (initialStatsFetchRef.current) return;
       setIsLoading(true);
       const response = await getUserMessageStats(user._id);
       console.log({ response });
@@ -60,7 +58,7 @@ export const useMessage = () => {
           response.readCount !== userMessageStats.readCount;
         if (hasStatsChanged) {
           setUserMessagesStats(response);
-          setIsStatsFetched(true);
+          initialStatsFetchRef.current = true;
           setError(null);
         }
       }
@@ -69,7 +67,7 @@ export const useMessage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [handleApiError, isStatsFetched, user, userMessageStats]);
+  }, [handleApiError, user, userMessageStats]);
 
   const getMessageById = useCallback(
     async (id: string) => {

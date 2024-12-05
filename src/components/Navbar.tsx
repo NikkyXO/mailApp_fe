@@ -18,7 +18,7 @@ const Navbar = () => {
       }
     };
     fetchData();
-  }, [getMsgStats, user, userMessageStats])
+  }, [])
 
   const handleLogout = () => {
     logout();
