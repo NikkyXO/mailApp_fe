@@ -50,13 +50,13 @@ const InboxPage = () => {
         <p className="text-gray-500 mb-6">
           You have no messages at the moment.
         </p>
-        <Link
+        {/* <Link
           to="/compose"
           className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition flex items-center space-x-2"
         >
           <Mail className="w-5 h-5" />
           <span>Compose New Message</span>
-        </Link>
+        </Link> */}
       </div>
     );
   }
