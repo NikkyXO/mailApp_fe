@@ -40,6 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('user', JSON.stringify(user));
         setUser(user);
+        setError(null);
         return true;
       } catch (error) {
         setError('Login failed, please try again later');
@@ -55,6 +56,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             username, password,
             email
           });
+          setError(null);
           return true;
         } catch (error) {
           setError(`Registration failed, please try again later`);

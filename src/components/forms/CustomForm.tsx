@@ -57,8 +57,11 @@ export const GenericForm: React.FC<FormProps> = ({
           {submitButtonText}
         </button>
       </form>
-      {message && <SuccessDisplay message={message} />}
-      {errorToDisplay && <ErrorDisplay message={errorToDisplay} />}
+      {message ? (
+      <SuccessDisplay message={message} />
+    ) : errorToDisplay ? (
+      <ErrorDisplay message={errorToDisplay} />
+    ) : null}
     </div>
   );
 };
