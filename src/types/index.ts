@@ -12,6 +12,7 @@ export interface FormProps {
   successMessage: string;
   successRedirectPath: string;
   className?: string;
+  error?: string;
 }
 
 

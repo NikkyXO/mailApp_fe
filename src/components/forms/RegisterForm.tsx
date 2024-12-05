@@ -2,14 +2,15 @@ import React from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { GenericForm } from "./CustomForm";
 import { FormField } from "../../types";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLoading } from "../../hooks/useLoading";
 import { LoadingSpinner } from "../LoadingSpinner";
 
 export const RegisterForm: React.FC = () => {
   const { isLoading, startLoading, stopLoading } = useLoading();
-  const { register, } = useAuth();
-  console.log('register form');
+  const { register, error } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const registerFields: FormField[] = [
     { type: 'email', placeholder: 'Email', value: '', onChange: () => {} },
@@ -28,16 +29,26 @@ export const RegisterForm: React.FC = () => {
   return (
     <div className="flex flex-col">
       <GenericForm
+      error={error ?? ''}
         fields={registerFields}
         onSubmit={async (formData) => {
           startLoading();
-          await register({
+          const result = await register({
             username: formData.username,
             email: formData.email,
             password: formData.password
           });
           stopLoading();
+          if (result) {
+            const from = location.state?.from?.pathname || '/';
+            navigate(from, { replace: true });
           return true
+
+          } else {
+            return false
+          }
+          
+          
         }}
         submitButtonText="Register"
         successMessage="Registration successful!"

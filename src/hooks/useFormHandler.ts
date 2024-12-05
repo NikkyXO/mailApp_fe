@@ -48,7 +48,7 @@ export const useFormHandler = (onSubmit: (formData: Record<string, string>) => P
     }, [successMessage, navigate, successRedirectPath]);
   
     return {
-      error,
+      validationError: error,
       loading,
       successMessage,
       handleSubmit

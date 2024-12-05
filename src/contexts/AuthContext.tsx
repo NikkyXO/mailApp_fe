@@ -12,15 +12,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [error, setError] = useState<string | null>(null);
     const [isAuthenticating, setIsAuthenticating] = useState(true);
 
-  // useEffect(() => {
-  //   const storedUser = localStorage.getItem('user');
-  //   const token = localStorage.getItem('accessToken');
-    
-  //   if (storedUser && token) {
-  //     setUser(JSON.parse(storedUser));
-  //     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  //   }
-  // }, []);
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -51,7 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(user);
         return true;
       } catch (error) {
-        setError('Login failed');
+        setError('Login failed, please try again later');
         console.error('Login failed', error);
         return false;
       }
@@ -66,7 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
           return true;
         } catch (error) {
-          setError('Registration failed');
+          setError(`Registration failed, please try again later`);
           console.error('Registration', error);
           return false;
         }

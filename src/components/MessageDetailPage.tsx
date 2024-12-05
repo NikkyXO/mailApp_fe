@@ -121,12 +121,12 @@ const MessageDetailPage = () => {
               <ArrowLeft className="w-5 h-5" />
               <span>Back to Inbox</span>
             </Link>
-            <button
+            {/* <button
               className="flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
             >
               <Reply className="w-5 h-5" />
               <span>Reply</span>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

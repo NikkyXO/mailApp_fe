@@ -11,6 +11,7 @@ export const GenericForm: React.FC<FormProps> = ({
   successMessage,
   successRedirectPath,
   className = "",
+  error,
 }) => {
   const [formData, setFormData] = useState<Record<string, string>>(
     fields.reduce(
@@ -19,7 +20,7 @@ export const GenericForm: React.FC<FormProps> = ({
     )
   );
   const {
-    error,
+    validationError,
     successMessage: message,
     handleSubmit,
   } = useFormHandler(onSubmit, successRedirectPath, successMessage);
@@ -30,6 +31,9 @@ export const GenericForm: React.FC<FormProps> = ({
       [placeholder.toLowerCase()]: value,
     }));
   };
+
+  const errorToDisplay = validationError || error;
+
   return (
     <div className={`my-auto ${className}`}>
       <form
@@ -54,7 +58,7 @@ export const GenericForm: React.FC<FormProps> = ({
         </button>
       </form>
       {message && <SuccessDisplay message={message} />}
-      {error && <ErrorDisplay message={error} />}
+      {errorToDisplay && <ErrorDisplay message={errorToDisplay} />}
     </div>
   );
 };

@@ -8,7 +8,7 @@ import { LoadingSpinner } from "../LoadingSpinner";
 
 export const LoginForm: React.FC = () => {
 
-  const { login } = useAuth();
+  const { login, error } = useAuth();
   const { isLoading, startLoading, stopLoading } = useLoading();
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,22 +27,23 @@ export const LoginForm: React.FC = () => {
     );
   }
 
+
   return (
     <div className=" flex flex-col ">
 
       <GenericForm
+      error={error?? ''}
         fields={loginFields}
         onSubmit={async (formData) => {
             startLoading();
            const result = await login(formData.email, formData.password);
+           stopLoading();
            if(result) {
-            stopLoading();
             const from = location.state?.from?.pathname || '/';
             navigate(from, { replace: true });
             return true;
            } else {
               return false;
-
            }
         }}
         submitButtonText="Login"

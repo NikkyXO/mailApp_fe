@@ -7,6 +7,7 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Inbox, User, Mail } from 'lucide-react';
 import React from "react";
 
+
 const HomePage = () => {
   // const navigate = useNavigate();
   const { isLoading, startLoading, stopLoading } = useLoading();
@@ -40,8 +41,9 @@ const HomePage = () => {
       </div>
     );
   }
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-50 p-6 flex items-center justify-center">     
       <div className="w-full max-w-2xl bg-white shadow-2xl rounded-2xl overflow-hidden">
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6">
           <div className="flex items-center space-x-4">
