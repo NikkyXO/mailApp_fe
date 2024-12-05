@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useMessage } from "../hooks/useMessages";
 import { useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
@@ -7,12 +7,11 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Inbox, User, Mail } from 'lucide-react';
 
 const HomePage = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { isLoading, startLoading, stopLoading } = useLoading();
   const { user } = useAuth();
   const { userMessageStats, getMsgStats } = useMessage();
 
-  console.log({ userMessageStats, user });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,13 +27,10 @@ const HomePage = () => {
       }
     };
     fetchData();
-  }, [getMsgStats, startLoading, stopLoading, user, userMessageStats]);
+  }, []);
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
-  }, [user, navigate]);
+
+  console.log({ user, userMessageStats})
 
   if (isLoading) {
     return (

@@ -16,7 +16,7 @@ import React from 'react';
     className = ''
   }) => (
     <div
-      className={`flex flex-col justify-center items-center w-full ${className}`}
+      className={`flex flex-col justify-center items-center w-full m-auto ${className}`}
       role="status"
       aria-label={message}
     >

@@ -70,6 +70,7 @@ export interface User {
     login: (username: string, password: string) => Promise<boolean>;
     logout: () => void;
     error: string | null;
+    isAuthenticating?: boolean;
   }
   
   export interface LoginCredentials {

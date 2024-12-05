@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
 import { useMessage } from "../hooks/useMessages";
 import  { useEffect, useState } from "react";
@@ -7,7 +7,6 @@ import { Menu, Home, Inbox, LogOut, MessageCircle } from 'lucide-react';
 
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { userMessageStats, getMsgStats } = useMessage();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -23,7 +22,6 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
   };
 
   return (

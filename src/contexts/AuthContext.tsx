@@ -10,15 +10,36 @@ import axios from 'axios';
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [isAuthenticating, setIsAuthenticating] = useState(true);
+
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem('user');
+  //   const token = localStorage.getItem('accessToken');
+    
+  //   if (storedUser && token) {
+  //     setUser(JSON.parse(storedUser));
+  //     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  //   }
+  // }, []);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    const token = localStorage.getItem('accessToken');
-    
-    if (storedUser && token) {
-      setUser(JSON.parse(storedUser));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    }
+    const checkAuthentication = async () => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+        }
+      } catch (error) {
+        console.log(error);
+        localStorage.removeItem('user');
+        setUser(null);
+      } finally {
+        setIsAuthenticating(false);
+      }
+    };
+
+    checkAuthentication();
   }, []);
   
     const login = useCallback( async (email: string, password: string) => {
@@ -59,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   
     return (
-      <AuthContext.Provider value={{ user, login, register, logout, error }}>
+      <AuthContext.Provider value={{ user, login, register, logout, error, isAuthenticating }}>
         {children}
       </AuthContext.Provider>
     );
