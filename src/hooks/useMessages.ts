@@ -4,6 +4,7 @@ import {
   getUserMessageStats,
   getMessageDetail,
   markMessageAsRead,
+  markMessageAsUnRead,
 } from "../services/api";
 import { Message, MessageStats } from "../types";
 import { useAuth } from "./useAuth";
@@ -104,6 +105,25 @@ export const useMessage = () => {
     [handleApiError, singleMessage]
   );
 
+  const markMessageUnRead = useCallback(
+    async (id: string) => {
+      try {
+        if (!id) return;
+        setIsLoading(true);
+        await markMessageAsUnRead(id);
+        if (singleMessage?.id === id) {
+          setSingleMessage({ ...singleMessage, read: false });
+        }
+        setError(null);
+      } catch (error) {
+        handleApiError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [handleApiError, singleMessage]
+  );
+
   const memoizedValues = useMemo(
     () => ({
       messages,
@@ -121,5 +141,6 @@ export const useMessage = () => {
     getMsgStats,
     getMessageById,
     markMessageRead,
+    markMessageUnRead,
   };
 };

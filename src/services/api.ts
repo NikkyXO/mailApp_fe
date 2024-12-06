@@ -95,3 +95,13 @@ export const markMessageAsRead = async (id: string) => {
     console.log("could not mark message as read", error);
   }
 };
+
+export const markMessageAsUnRead = async (id: string) => {
+  try {
+    const headers = getAuthHeaders();
+    const response = await api.get(`/messages/mark-unread/${id}`, { headers });
+    return response.data;
+  } catch (error) {
+    console.log("could not mark message as read", error);
+  }
+};

@@ -3,19 +3,14 @@ import { useMessage } from "../hooks/useMessages";
 import { Link } from "react-router-dom";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { useLoading } from "../hooks/useLoading";
-import { 
-  Mail, 
-  MailOpen, 
-  Clock, 
-  AlertCircle 
-} from 'lucide-react';
+import { Mail, MailOpen, Clock, AlertCircle, EyeOff } from "lucide-react";
 import { Message } from "../types";
 
 export interface InboxPageProps {
   messages: Message[];
 }
 const InboxPage = () => {
-  const { messages, fetchMessages } = useMessage();
+  const { messages, fetchMessages, markMessageUnRead } = useMessage();
   const { isLoading, startLoading, stopLoading } = useLoading();
   const initialFetchRef = useRef(false);
 
@@ -36,6 +31,18 @@ const InboxPage = () => {
     loadMessages();
   }, []);
 
+  const handleMarkAsUnread = async (e: React.MouseEvent, messageId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      await markMessageUnRead(messageId);
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to mark message as unread", error);
+    }
+  };
+
   if (isLoading) {
     return <LoadingSpinner className="mt-20" message="Loading messages..." />;
   }
@@ -50,13 +57,13 @@ const InboxPage = () => {
         <p className="text-gray-500 mb-6">
           You have no messages at the moment.
         </p>
-        {/* <Link
+        <Link
           to="/compose"
           className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition flex items-center space-x-2"
         >
           <Mail className="w-5 h-5" />
           <span>Compose New Message</span>
-        </Link> */}
+        </Link>
       </div>
     );
   }
@@ -69,16 +76,16 @@ const InboxPage = () => {
           <h2 className="text-3xl font-bold text-white">Inbox</h2>
         </div>
       </div>
-
+  
       <div className="divide-y divide-gray-100">
         {messages.map((message) => (
           <Link
             to={`/message/${message.id}`}
             key={message.id}
             className={`
-              block p-6 hover:bg-gray-50 transition duration-300 
+              block p-6 hover:bg-gray-50 transition duration-300
               ${!message.read ? "bg-blue-50/50" : ""}
-              group
+              group relative
             `}
           >
             <div className="flex items-start space-x-4">
@@ -87,27 +94,44 @@ const InboxPage = () => {
               ) : (
                 <Mail className="w-6 h-6 text-blue-500" />
               )}
-              
+  
               <div className="flex-grow">
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition">
                     {message.subject}
                   </h3>
-                  {!message.read && (
+                  {/* Mark as Unread Button for Read Messages */}
+                  {message.read ? (
+                    <button
+                      onClick={(e) => handleMarkAsUnread(e, message.id)}
+                      className="
+                        mr-5 mt-5
+                        hover:text-blue-500
+                        opacity-0 group-hover:opacity-100
+                        transition-opacity duration-300
+                        bg-green-500 text-white px-2 py-1 rounded-full
+                        flex items-center justify-center
+                      "
+                      title="Mark as Unread"
+                    >
+                      <EyeOff className="w-4 h-4" />
+                    </button>
+                  ) : (
                     <span className="bg-red-500 text-white rounded-full px-2 py-1 text-xs">
                       Unread
                     </span>
                   )}
+
                 </div>
-                
+  
                 <p className="text-gray-600 line-clamp-2">
                   {message.content.slice(0, 200)}
                 </p>
-                
+  
                 <div className="flex items-center text-sm text-gray-500 mt-2 space-x-4">
                   <div className="flex items-center space-x-1">
                     <Clock className="w-4 h-4" />
-                    <span>{formatDate(message?.createdAt ?? '')}</span>
+                    <span>{formatDate(message?.createdAt ?? "")}</span>
                   </div>
                 </div>
               </div>
@@ -115,7 +139,7 @@ const InboxPage = () => {
           </Link>
         ))}
       </div>
-
+  
       {messages.length > 10 && (
         <div className="bg-gray-50 p-4 text-center">
           <Link
@@ -128,21 +152,17 @@ const InboxPage = () => {
       )}
     </div>
   );
+
 };
 
 export default memo(InboxPage);
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 };
-
-
-
-
-
