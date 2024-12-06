@@ -32,8 +32,6 @@ const HomePage = () => {
   }, []);
 
 
-  console.log({ user, userMessageStats})
-
   if (isLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">

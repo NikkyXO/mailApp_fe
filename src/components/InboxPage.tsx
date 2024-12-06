@@ -102,7 +102,7 @@ const InboxPage = () => {
                   <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition">
                     {message.subject}
                   </h3>
-                  {/* Mark as Unread Button for Read Messages */}
+
                   {message.read ? (
                     <button
                       onClick={(e) => handleMarkAsUnread(e, message.id)}

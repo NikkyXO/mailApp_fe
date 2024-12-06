@@ -45,7 +45,6 @@ const MessageDetailPage = () => {
       </div>
     );
   }
-  console.log({ singleMessage })
 
   if (!singleMessage) {
     return <LoadingSpinner className="mt-20" message="Loading message..." />;
@@ -76,13 +75,11 @@ const MessageDetailPage = () => {
           </div>
         </div>
 
-        {/* Message Content */}
         <div className="p-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             {singleMessage.subject}
           </h2>
 
-          {/* Sender Information */}
           <div className="flex items-center space-x-4 mb-6 text-gray-600">
             <div className="bg-blue-100 p-2 rounded-full">
               <User className="w-6 h-6 text-blue-500" />
@@ -107,12 +104,10 @@ const MessageDetailPage = () => {
             </div>
           </div>
 
-          {/* Message Body */}
           <div className="prose max-w-none text-gray-700 leading-relaxed">
             <p>{singleMessage.content}</p>
           </div>
 
-          {/* Action Buttons */}
           <div className="mt-8 flex space-x-4">
             <Link
               to="/inbox"
