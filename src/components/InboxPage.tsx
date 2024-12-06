@@ -5,7 +5,7 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { useLoading } from "../hooks/useLoading";
 import { Mail, MailOpen, Clock, AlertCircle, EyeOff } from "lucide-react";
 import { Message } from "../types";
-import { useNavigate } from 'react-router-dom';
+
 
 export interface InboxPageProps {
   messages: Message[];
@@ -14,7 +14,6 @@ const InboxPage = () => {
   const { messages, fetchMessages, markMessageUnRead } = useMessage();
   const { isLoading, startLoading, stopLoading } = useLoading();
   const initialFetchRef = useRef(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const loadMessages = async () => {
@@ -39,7 +38,7 @@ const InboxPage = () => {
 
     try {
       await markMessageUnRead(messageId);
-      navigate(0)
+      await fetchMessages();
     } catch (error) {
       console.error("Failed to mark message as unread", error);
     }

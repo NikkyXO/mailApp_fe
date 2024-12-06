@@ -3,7 +3,6 @@ import { MessageStats, User } from "../types";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  // timeout: 10000, // 10 second timeout
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -26,12 +25,10 @@ export const loginUser = async (
   password: string
 ): Promise<LoginResponse> => {
   try {
-    console.log({ email, password });
     const response = await api.post<LoginResponse>("/auth/login", {
       email,
       password,
     });
-    console.log({ response });
     localStorage.setItem("accessToken", response.data.accessToken);
     return response.data;
   } catch (error) {
@@ -102,6 +99,6 @@ export const markMessageAsUnRead = async (id: string) => {
     const response = await api.get(`/messages/mark-unread/${id}`, { headers });
     return response.data;
   } catch (error) {
-    console.log("could not mark message as read", error);
+    console.log("could not mark message as unread", error);
   }
 };
