@@ -1,4 +1,4 @@
-import { useEffect, useRef, memo } from "react";
+import { useEffect, useRef, useCallback, memo } from "react";
 import { useMessage } from "../hooks/useMessages";
 import { Link } from "react-router-dom";
 import { LoadingSpinner } from "./LoadingSpinner";
@@ -32,7 +32,7 @@ const InboxPage = () => {
     loadMessages();
   }, []);
 
-  const handleMarkAsUnread = async (e: React.MouseEvent, messageId: string) => {
+  const handleMarkAsUnread = useCallback(async (e: React.MouseEvent, messageId: string) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -42,7 +42,8 @@ const InboxPage = () => {
     } catch (error) {
       console.error("Failed to mark message as unread", error);
     }
-  };
+  }, [markMessageUnRead, fetchMessages]);
+
 
   if (isLoading) {
     return <LoadingSpinner className="mt-20" message="Loading messages..." />;
