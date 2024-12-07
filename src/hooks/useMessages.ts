@@ -44,7 +44,7 @@ export const useMessage = () => {
 
   const getMsgStats = useCallback(async () => {
     try {
-      // Prevent multiple simultaneous calls
+
     if (initialStatsFetchRef.current) return;
       setIsLoading(true);
       const response = await getUserMessageStats();
