@@ -1,9 +1,9 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import HomePage from "./components/HomePage";
-import InboxPage from "./components/InboxPage";
-import MessageDetailPage from "./components/MessageDetailPage";
+import HomePage from "./pages/HomePage";
+import InboxPage from "./pages/InboxPage";
+import MessageDetailPage from "./pages/MessageDetailPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { AuthProvider } from "./contexts/AuthContext";

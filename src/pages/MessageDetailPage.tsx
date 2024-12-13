@@ -9,7 +9,7 @@ import {
   Reply, 
   MoreVertical 
 } from 'lucide-react';
-import { LoadingSpinner } from "./LoadingSpinner";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 import React from "react";
 
 const MessageDetailPage = () => {

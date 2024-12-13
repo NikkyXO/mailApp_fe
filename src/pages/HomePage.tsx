@@ -3,7 +3,7 @@ import { useMessage } from "../hooks/useMessages";
 import { useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useLoading } from "../hooks/useLoading";
-import { LoadingSpinner } from "./LoadingSpinner";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 import { Inbox, User, Mail } from 'lucide-react';
 import React from "react";
 
