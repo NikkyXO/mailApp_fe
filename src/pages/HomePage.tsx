@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Link } from "react-router-dom";
 import { useMessage } from "../hooks/useMessages";
 import { useEffect } from "react";
